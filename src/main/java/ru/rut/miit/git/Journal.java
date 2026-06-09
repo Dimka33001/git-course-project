@@ -61,10 +61,29 @@ public class Journal {
             return Collections.emptyList();
         }
 
-        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8).stream().collect(Collectors.toList());
+        // Разрешение конфликта: объединяем вывод списка и поиск
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+
         System.out.println("--- Записи дневника ---");
-        lines.forEach(System.out::println);
+        for (String line : lines) {
+            System.out.println(line);
+        }
         System.out.println("-----------------------");
+
+        // Логика поиска из ветки feature/search-by-date
+        System.out.println("--- Результаты поиска (по слову 'тест') ---");
+        boolean found = false;
+        for (String line : lines) {
+            if (line.toLowerCase().contains("тест")) {
+                System.out.println(line);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("Ничего не найдено.");
+        }
+        System.out.println("-------------------------");
+
         return lines;
     }
 
